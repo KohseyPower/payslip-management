@@ -70,6 +70,7 @@ def load_downloaded_ids(file_path):
     """
     Load downloaded document IDs (using folder-file combination) from the specified file.
     """
+    print("print file_path", file_path)
     downloaded_ids = set()
     if os.path.exists(file_path):
         try:
@@ -173,6 +174,22 @@ def main():
         download_document(doc, session_id, downloaded_ids, downloaded_file)
 
     # Save the new downloaded documents in my folder "bulletins_de_paie" in my Google Drive
+    # Authenticate and create Google Drive instance
+    gauth = GoogleAuth()
+    gauth.LocalWebserverAuth()
+    drive = GoogleDrive(gauth)
+    # Create GoogleDrive instance with authenticated GoogleAuth instance.
+
+    # Create GoogleDriveFile instance with title 'Hello.txt'.
+    file1 = drive.CreateFile({'title': 'Hello.txt'})
+    file1.Upload() # Upload the file.
+    print('title: %s, id: %s' % (file1['title'], file1['id']))
+
+    # Create a folder named "bulletins_de_paie" if it doesn't exist
+    
+
+    # Upload downloaded documents to Google Drive
+   
 
 if __name__ == "__main__":
     main()

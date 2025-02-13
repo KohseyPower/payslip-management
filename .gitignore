@@ -14,3 +14,6 @@ wheels/
 
 # Files' ids txt
 downloaded.txt
+
+# Google drive token
+client_secrets.json
