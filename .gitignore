@@ -17,3 +17,5 @@ downloaded.txt
 
 # Google drive token
 client_secrets.json
+uploaded.txt
+google_info.json
