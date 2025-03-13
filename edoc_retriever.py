@@ -18,7 +18,7 @@ def authenticate(email, password):
         response = requests.post(auth_url, json=payload, headers=headers)
         response.raise_for_status()
     except requests.RequestException as e:
-        raise Exception(f"Error during authentication: {e}")
+        raise Exception(f"Error during authentication on eDocPerso: {e}")
 
     try:
         data = response.json()
@@ -101,7 +101,7 @@ def download_document(doc, session_id, downloaded_ids, downloaded_file):
     name = doc["name"]
 
     if file_identifier in downloaded_ids:
-        print(f"Document already downloaded, skipping: {name}")
+        print(f"Document already downloaded from eDocPerso, skipping: {name}")
         return
 
     # Create a valid file name by replacing spaces and "/" with "_"
@@ -145,7 +145,7 @@ def main():
     # Authenticate and retrieve session ID
     try:
         session_id = authenticate(email, password)
-        print("Authentication successful.")
+        print("Authentication successful on eDocPerso.")
     except Exception as e:
         print(e)
         sys.exit(1)
@@ -158,7 +158,7 @@ def main():
         sys.exit(1)
 
     # Display the retrieved documents
-    print("Retrieved documents:")
+    print("Retrieved documents form eDocPerso:")
     for doc in docs_list:
         print(doc["id"], doc["name"])
 
@@ -179,21 +179,12 @@ def main():
     gauth = GoogleAuth()
     gauth.settings["client_config_backend"] = "service"
     gauth.settings["service_config"] = {
-        "client_json_file_path": "august-emitter-440212-k0-b36c459f58c1.json",
+        "client_json_file_path": "google_info.json",
         "client_user_email": "",
     }
     gauth.ServiceAuth()
     drive = GoogleDrive(gauth)
 
-    # Create a file named "Hello.txt" and share it with your personal account
-    file1 = drive.CreateFile({"title": "caca.txt"})
-
-    file1.SetContentString("Caca from Service Account!")
-    file1.Upload()
-    file1.InsertPermission(
-        {"type": "user", "value": "kohsey.dufour@gmail.com", "role": "reader"}
-    )
-    print("Uploaded file '%s' with id: %s" % (file1["title"], file1["id"]))
     # Create a folder named "bulletins_de_paie" if it doesn't exist
     folder_name = "bulletins_de_paie"
     folder_list = drive.ListFile(
@@ -204,7 +195,10 @@ def main():
 
     if folder_list:
         folder = folder_list[0]
-        print("Le dossier '%s' existe déjà avec l'id: %s" % (folder_name, folder["id"]))
+        print(
+            "The folder '%s' already exists with the id: %s"
+            % (folder_name, folder["id"])
+        )
     else:
         folder_metadata = {
             "title": folder_name,
@@ -212,7 +206,7 @@ def main():
         }
         folder = drive.CreateFile(folder_metadata)
         folder.Upload()
-        print("Dossier '%s' créé avec l'id: %s" % (folder_name, folder["id"]))
+        print("File '%s' created with the id: %s" % (folder_name, folder["id"]))
 
     # Give all permissions to kohsey.dufour@gmail.com
     folder.InsertPermission(
@@ -221,8 +215,6 @@ def main():
 
     # Upload downloaded documents to Google Drive
     local_downloads_folder = os.getcwd()
-    print("os.getcwd()", os.getcwd())
-    print("os.listdir(local_downloads_folder)", os.listdir(local_downloads_folder))
 
     # Load files from "uploaded.txt"
     uploaded_log_file = "uploaded.txt"
@@ -239,19 +231,22 @@ def main():
     for file in os.listdir(local_downloads_folder):
         if file.lower().endswith(".pdf"):
             if file in uploaded_ids:
-                print(f"Document '{file}' already uploaded, skipping.")
+                print(f"Document '{file}' already uploaded on Google Drive, skipping.")
                 continue
             file_path = os.path.join(local_downloads_folder, file)
             gfile = drive.CreateFile({"title": file, "parents": [{"id": folder["id"]}]})
             gfile.SetContentFile(file_path)
             try:
                 gfile.Upload()
-                print("Uploaded document '%s' with id: %s" % (file, gfile["id"]))
+                print(
+                    "Uploaded document '%s' with id: %s in Google Drive."
+                    % (file, gfile["id"])
+                )
                 # Add the uploaded file to log
                 with open(uploaded_log_file, "a") as f:
                     f.write(file + "\n")
             except Exception as e:
-                print(f"Error uploading {file}: {e}")
+                print(f"Error uploading {file} in Google Drive: {e}")
 
 
 if __name__ == "__main__":
