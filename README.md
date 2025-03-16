@@ -8,3 +8,4 @@
 - [ ] Set up a cron job on the VPS
 - [X] Dockerize my app
 - [ ] Explain my_secrets.txt
+- [ ] Implement quota to infinite with : https://developers.google.com/drive/api/reference/rest/v2/permissions/insert?hl=fr
