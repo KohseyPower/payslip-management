@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  mon_service:
+    image: payslip-docker
+    secrets:
+      - my_secrets
+secrets:
+  my_secrets:
+    file: ./my_secrets.txt

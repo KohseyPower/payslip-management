@@ -19,3 +19,6 @@ downloaded.txt
 client_secrets.json
 uploaded.txt
 google_info.json
+
+# edoc login
+my_secrets.txt

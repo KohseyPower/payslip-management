@@ -135,12 +135,29 @@ def download_document(doc, session_id, downloaded_ids, downloaded_file):
 
 def main():
     # Verify that the required arguments are provided
-    if len(sys.argv) < 3:
-        print("Usage: {} <email> <password>".format(sys.argv[0]))
+    # if len(sys.argv) < 3:
+    #     print("Usage: {} <email> <password>".format(sys.argv[0]))
+    #     sys.exit(1)
+
+    # Onlt in development
+    # email = sys.argv[1]
+    # password = sys.argv[2]
+
+    # Only in production
+    try:
+        with open("/run/secrets/my_secrets", "r") as f:
+            mon_secret = f.read().strip()
+    except Exception as e:
+        print(f"Erreur lors de la lecture du secret : {e}")
         sys.exit(1)
 
-    email = sys.argv[1]
-    password = sys.argv[2]
+    try:
+        email, password = mon_secret.splitlines()
+    except ValueError:
+        print(
+            "Le secret doit contenir l'email et le mot de passe sur deux lignes distinctes."
+        )
+        sys.exit(1)
 
     # Authenticate and retrieve session ID
     try:
