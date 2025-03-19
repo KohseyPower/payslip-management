@@ -1,6 +1,8 @@
-version: '3.7'
 services:
   mon_service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
     image: payslip-docker
     secrets:
       - my_secrets
