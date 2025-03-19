@@ -224,11 +224,10 @@ def main():
         folder = drive.CreateFile(folder_metadata)
         folder.Upload()
         print("File '%s' created with the id: %s" % (folder_name, folder["id"]))
-
-    # Give all permissions to kohsey.dufour@gmail.com
-    folder.InsertPermission(
-        {"type": "user", "value": "kohsey.dufour@gmail.com", "role": "writer"}
-    )
+        # Give all permissions to kohsey.dufour@gmail.com
+        folder.InsertPermission(
+            {"type": "user", "value": "kohsey.dufour@gmail.com", "role": "writer"}
+        )
 
     # Upload downloaded documents to Google Drive
     local_downloads_folder = os.getcwd()
