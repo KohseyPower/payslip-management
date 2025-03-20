@@ -2,10 +2,12 @@
 
 ## To-Do List
 
+- [ ] Modelize a MCD
+- [ ] Create django app
 - [ ] Modularize my code
 - [ ] Create specific folders for my payslips
-- [X] Set up a VPS
-- [X] Set up a cron job on the VPS
-- [X] Dockerize my app
+- [ ] Explain google info in README
 - [ ] Explain my_secrets.txt in README
-- [ ] Implement quota to infinite with : https://developers.google.com/drive/api/reference/rest/v2/permissions/insert?hl=fr
+- [ ] Try to really understand Google API
+- [ ] Create a documentation about Edoc Perso API
+- [ ] Build a CI pipeline (utiliser drone ?)
