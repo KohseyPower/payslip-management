@@ -145,7 +145,7 @@ def main():
 
     # Only in production
     try:
-        with open("my_secrets.txt", "r") as f:
+        with open("/run/secrets/my_secrets", "r") as f:
             mon_secret = f.read().strip()
     except Exception as e:
         print(f"Erreur lors de la lecture du secret : {e}")
